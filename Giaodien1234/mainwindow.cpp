@@ -66,15 +66,17 @@ void MainWindow::on_bt_xlam_clicked()
     QImage image_out(image_in.width() ,image_in.height(), QImage::Format_ARGB32);
     for(int x = 0; x < image_in.width(); x++)
         for(int y = 0 ; y < image_in.height(); y++) {
-            QRgb rgb = image_in.pixel(x,y);//lay mau gia tri pixel(x,y)
-            QColor color_in(rgb);
-            int h,s,v;
-            color_in.getHsv(&h, &s, &v);//lay 3 thanh phan h s v tu color
-//            int h_out = 255 - h;
-//            int s_out = 255 - s;
-            int v_out = 255 - v;
-            QColor color_out = QColor::fromHsv(h,s,v_out);
-            image_out.setPixel(x,y,color_out.rgb());
+            QRgb color = image_in.pixel(x,y);//lay mau gia tri pixel(x,y)
+            int red_in = qRed(color);//doi gia tri mau thanh muc do
+            int red_out = 255 - red_in;//thay doi do am ban anh
+
+            int green_in = qGreen(color);//doi gia tri mau thanh muc xanh la
+            int green_out = 255 - green_in;//thay doi do am ban anh
+
+            int blue_in = qBlue(color);//doi gia tri mau thanh muc xanh duong
+            int blue_out = 255 - blue_in;//thay doi do am ban anh
+            QRgb color_out = qRgb(red_out, green_out, blue_out);//anh xam (R=G=B)
+            image_out.setPixel(x,y,color_out);
         }
     DisplayImage(image_in,QFileInfo(filename).fileName());
     DisplayImage(image_out,QFileInfo(filename).fileName());
